@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,
+                            width=device-width,height=device-height">
+    <title>UDRX</title>
+
+    <link rel="stylesheet" href="../webLibs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../webLibs/bootstrap/custom/bootswatchSlate/bootstrap.css">
+<!--
+<link rel="stylesheet" href="../webLibs/bootstrap/css/bootstrap.css">
+
+<link rel="stylesheet" href="../webLibs/bootstrap/css/zenPillow.css">
+<link rel="stylesheet" href="../webLibs/bootstrap/custom/paintstrap-zenPillow-kuler-3319796/bootstrap.css">
+<link rel="stylesheet" href="../webLibs/bootstrap/custom/paintstrap-khaki-kuler-472760/bootstrap.css">
+<link rel="stylesheet" href="../webLibs/bootstrap/custom/paintstrap-kuler-119766/bootstrap.css">
+<link rel="stylesheet" href="../webLibs/bootstrap/warmMono.css">
+
+
+-->
+<link rel="stylesheet" href="Styles/udr.css">
+
+    <script src="../webLibs/jquery.js"></script>
+    <script src="../webLibs/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../webLibs/jq-tablesorter/js/jquery.tablesorter.js"></script>
+</head>
+
+
+<body id="main">
+
+<!-- Control panel -------------------------------------------------- -->
+
+   <div class="navbar  navbar-fixed-top nav-ctl" >
+      <div class="container-fluid">
+
+        <div id="control">
+            <div id="control-row" class="row">
+
+                <div id="logobar" class="col-xs-4">
+                    <a href="http://nwdigitalradio.com" target="_blank" title="Putting the Amateur back in Amateur Radio"><img class="center" src="images/weblogoblk.png" alt=""></a>
+                </div>
+
+                <div id="ctl-rcv" class="col-xs-4">
+                    <form class="form" role="form">
+                        <div class="form-group">
+                            <label for="recv-str" class="col-sm-2 control-label">Recv</label>
+                            <div class="col-sm-10">
+                                <div class="progress">
+                                    <div id="recv-sig" class="progress-bar progress-bar-udr" role="progressbar" style="width: 50%"></div>
+                                </div>
+                                <!-- meter doesnt work in iOS -->
+                                <!-- <meter id="tran-sig" min="0" low="25" high="100" max="100" value="20"></meter></p> -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="ctl-tran" class="col-xs-2">
+                    <form class="form" role="form">
+                        <div class="form-group">
+                            <label for="tran-sig" class="col-sm-3 control-label">Tran</label>
+                            <div class="col-sm-3">
+                                <div id="tran-sig" class="led-black"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="ctl-tran" class="col-xs-2">
+                    <ul class="nav">
+                        <li class="dropdown"><a id="mycall" href="#" class="dropdown-toggle" data-toggle="dropdown">Guest <b class="glyphicon glyphicon-cog"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a data-toggle="modal" href="#myModal"><i class="glyphicon glyphicon-cog"></i> Preferences</a></li>
+                                <li><a href="http://nwdigitalradio.com/contact"><i class="glyphicon glyphicon-envelope"></i> Contact Support</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#"><i class="glyphicon glyphicon-off"></i> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="control-panel" class="row">
+              <div id="ctl-settings"  class="col-sm-12">
+                <table id="radioTable" class="sys-table">
+                        <tr>
+                            <th> Name
+                            <th> Mode
+                            <th> CallSign
+                            <th> Option 1
+                            <th> Option 2
+                            <th> Frequency
+                            <th> DUP
+                            <th> Pwr
+                            <th> Save
+                            <th> Connection </th>
+                        </tr>
+                        <tr id="ctl-rowData">
+                            <!--<td id="mycall"> NW7DR </td>-->
+
+                            <td id="loc"> <input type="text" class="form-control" name="ch" maxlength="12" size="8" placeholder="Location">
+
+                            <td id="mode" >
+                                <select name="mode" class="form-control">
+                                <option value="AX25" selected="selected">AX.25</option>
+                                <option value="D-Star" >D-STAR</option>
+                                </select>
+                            </td>
+
+                            <td id="sign"> <input type="text" class="form-control input-sm" name="urcall" maxlength="9" size="4" placeholder="CallSign">
+                            <td id="opt1"> <input type="text" class="form-control input-sm"  name="path" maxlength="9" size="9" placeholder="opt1">
+                            <td id="opt2"> <input type="text" class="form-control input-sm"  name="path" maxlength="9" size="9" placeholder="opt2">
+                            <td id="freq"><input type="number" class="form-control input-sm" name="frequency" min="420" max="450" step="0.025" value="440.800">
+
+                            <td id="dup">
+                                <select name="dup" class="form-control input-sm">
+                                <option value="none">none</option>
+                                <option value="+5" selected="selected">+5</option>
+                                <option value="-5" >-5</option>
+                                </select>
+                            </td>
+
+                            <td id="pwr">
+                                <select name="pwr" class="form-control input-sm">
+                                <option value="1">1W</option>
+                                <option value="5" >5W</option>
+                                <option value="10" selected="selected">10W</option>
+                                <option value="25">25W</option>
+                                </select>
+                            </td>
+
+                            <td> <button id="saveCh" class="btn btn-default" name="saveTable">Save</button>
+                            <td id="connect"> <button id="radConnect" class="btn btn-default" name="radConnect">
+                            <span class="glyphicon glyphicon-warning-sign"></span>
+                            </button>
+                        </tr>
+                    </table>
+              </div>
+
+            </div>
+        </div> <!-- end of control div -->
+
+      </div>
+    </div> <!-- end of navbar div -->
+
+<!-- Main content -------------------------------------------------- -->
+
+    <div class="container-fluid no-padding">
+        <div  id="nav-row" class="row">
+
+            <div id="navBar" class="col-sm-2 sidebar">
+                <div  id="tab-container" class="col-sm-12">
+                    <ul id="tab-nav" class="nav nav-sidebar">
+                        <li id="tabHeader_1"><a href="#login-tab" data-toggle="tab">Login</a></li>
+                        <li id="tabHeader_2"><a href="#channels-tab" data-toggle="tab">Channels</a></li>
+
+                        <li id="tabHeader_3"><a href="#winlink-tab" data-toggle="tab">Winlink</a></li>
+                        <li id="tabHeader_4"><a href="#spy-tab" data-toggle="tab">Spy</a></li>
+                        <li id="tabHeader_5"><a href="#aprs-tab" data-toggle="tab">APRS</a></li>
+
+                        <li id="tabHeader_6"><a href="#servers-tab" data-toggle="tab">Settings</a></li>
+                        <li id="tabHeader_7"><a href="#help-tab" data-toggle="tab">Help</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="main-content" class="col-sm-10 main-ct">
+                <div class="tab-content">
+
+                    <div id="login-tab" class="tab-pane active fill-height"><iframe name="Login" id="login-fr" src="welcome.html" ></iframe></div>
+
+                    <div id="channels-tab" class="tab-pane active fill-height"><iframe name="Channels" id="channels-fr"  src="channels.html" ></iframe></div>
+
+                    <div id="winlink-tab" class="tab-pane active fill-height"><iframe name="Winlink" id="winlink-fr"  src="winlink.html"></iframe></div>
+
+                    <div id="spy-tab" class="tab-pane active fill-height"><iframe name="Spy" id="spy-fr"  src="ui_spy.html"></iframe></div>
+
+                    <div id="aprs-tab" class="tab-pane fill-height"><iframe name="APRS" id="aprs-fr"  src="aprs.html"></iframe> </div>
+
+                    <div id="servers-tab" class="tab-pane fill-height"><iframe name="Settings" id="servers-fr"  src="servers.html" ></iframe></div>
+
+                    <div id="help-tab" class="tab-pane fill-height"><iframe name="Help" id="help-fr"  src="help.html"></iframe></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<!-- Footer -------------------------------------------------------- -->
+
+    <div class="navbar navbar-default navbar-fixed-bottom">
+      <div class="container">
+        <div id="radio-status" class="row" >
+            <div class="col-xs-12 col-sm-6" >
+                <table id="timeTable" class="sys-table"></table>
+            </div>
+
+            <div class="col-xs-12 col-sm-6" >
+                <div class="row>">
+                    <div class="col-xs-10 col-sm-9" >
+                        <table id="statusTable" class="sys-table"></table>
+                    </div>
+
+                    <div class="col-xs-1 col-sm-1" >
+                        <div id="radConn" class="led-red"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-group" id="accordion">
+              <!-- ----------------------------- -->
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                      Debug
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse">
+                  <div id="mainDebug" class="main-debug">
+                    Debug - nothing yet...
+                  </div>
+                </div>
+              </div>
+              <!-- ----------------------------- -->
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                      Spy
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                  <div id="mainSpy" class="main-debug">
+                    Spy - nothing yet...
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            </div>
+
+
+        </div>
+      </div>
+    </div>
+
+<!-- Scripts and stuff -------------------------------------------------- -->
+
+
+    <script type="text/javascript" src="js/global-vars.js"></script>
+    <script type="text/javascript" src="js/helpers.js"></script>
+    <script type="text/javascript" src="js/connectionHandler.js"></script>
+    <script type="text/javascript" src="js/core-jquery.js"></script>
+    <script type="text/javascript" src="js/sandbox.js"></script>
+    <script type="text/javascript" src="js/modules.js"></script>
+    <script type="text/javascript" src="js/login_module.js"></script>
+    <script type="text/javascript" src="js/servers_module.js"></script>
+    <script type="text/javascript" src="js/channels_module.js"></script>
+    <script type="text/javascript" src="js/spy_module.js"></script>
+    <script type="text/javascript" src="js/winlink_module.js"></script>
+    <script type="text/javascript" src="js/aprs_module.js"></script>
+
+    <script>Helpers.m_loadRadStatTable(document,"statusTable")</script>
+    <script>Helpers.m_loadRadStatTable(document,"timeTable")</script>
+
+    <script>
+        $(document).ready(function(){
+            createMainModules();
+            createLoginModule();
+            createServersModule();
+            createChannelsModule();
+            createSpyModule();
+            createWinlinkModule();
+            createAPRSModule();
+            CORE.start_all();
+        });
+    </script>
+
+    <script>
+        //This is to keep both accordian windows open at once.
+        // It's not quite there, but close
+        $('#accordion').on('show.bs.collapse', function () {
+          $('#accordion .in').collapse('show');
+        });
+    </script>
+
+
+</body>
+</html>
+
+
